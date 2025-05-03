@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const client_s3_1 = require("@aws-sdk/client-s3");
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const mime_types_1 = __importDefault(require("mime-types"));
 const app = (0, express_1.default)();
 dotenv_1.default.config();
 const s3 = new client_s3_1.S3Client({
@@ -43,7 +42,23 @@ app.get("/*", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             res.status(404).send("File not found");
             return;
         }
-        let contentType = data.ContentType || mime_types_1.default.lookup(filePath) || "application/octet-stream";
+        let contentType = data.ContentType;
+        if (!contentType || contentType === "application/octet-stream") {
+            if (filePath.endsWith(".html") || filePath === "/")
+                contentType = "text/html";
+            else if (filePath.endsWith(".css"))
+                contentType = "text/css";
+            else if (filePath.endsWith(".js"))
+                contentType = "application/javascript";
+            else if (filePath.endsWith(".png"))
+                contentType = "image/png";
+            else if (filePath.endsWith(".jpg") || filePath.endsWith(".jpeg"))
+                contentType = "image/jpeg";
+            else if (filePath.endsWith(".svg"))
+                contentType = "image/svg+xml";
+            else
+                contentType = "application/octet-stream";
+        }
         res.set("Content-Type", contentType);
         const bodyContents = yield data.Body.transformToByteArray();
         res.send(Buffer.from(bodyContents));
