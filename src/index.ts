@@ -1,6 +1,7 @@
 import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import express from "express";
 import dotenv from "dotenv";
+import mime from "mime-types"
 
 const app = express();
 
@@ -38,16 +39,8 @@ app.get("/*", async (req, res) => {
             return;
         }
 
-        let contentType = data.ContentType;
-        if (!contentType || contentType === "application/octet-stream") {
-            if (filePath.endsWith(".html") || filePath === "/") contentType = "text/html";
-            else if (filePath.endsWith(".css")) contentType = "text/css";
-            else if (filePath.endsWith(".js")) contentType = "application/javascript";
-            else if (filePath.endsWith(".png")) contentType = "image/png";
-            else if (filePath.endsWith(".jpg") || filePath.endsWith(".jpeg")) contentType = "image/jpeg";
-            else if (filePath.endsWith(".svg")) contentType = "image/svg+xml";
-            else contentType = "application/octet-stream";
-        }
+
+        let contentType = data.ContentType || mime.lookup(filePath) || "application/octet-stream";
         
         res.set("Content-Type", contentType);
         const bodyContents = await data.Body.transformToByteArray();
