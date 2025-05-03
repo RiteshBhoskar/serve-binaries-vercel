@@ -27,7 +27,8 @@ const s3 = new client_s3_1.S3Client({
 const BUCKET_NAME = process.env.BUCKET_NAME;
 app.get("/*", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const host = req.hostname;
-    const id = host.split(".")[0];
+    // const id = host.split(".")[0];
+    const id = "jjdwr";
     let filePath = req.path;
     if (filePath === "/") {
         filePath = "/index.html";

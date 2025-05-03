@@ -18,7 +18,8 @@ const BUCKET_NAME = process.env.BUCKET_NAME!;
 
 app.get("/*", async (req, res) => {
     const host = req.hostname;
-    const id = host.split(".")[0];
+    // const id = host.split(".")[0];
+    const id = "jjdwr"
     let filePath = req.path;
 
     if (filePath === "/") {
