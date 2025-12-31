@@ -6,13 +6,7 @@ const app = express();
 
 dotenv.config();
 
-const s3 = new S3Client({
-    region: "ap-south-1",
-    credentials: {
-        accessKeyId: process.env.ACCESS_KEY!,
-        secretAccessKey: process.env.SECRET_ACCESS_KEY!,
-    },
-})
+const s3 = new S3Client({ region: "ap-south-1" })
 
 const BUCKET_NAME = process.env.BUCKET_NAME!;
 

@@ -17,13 +17,7 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const app = (0, express_1.default)();
 dotenv_1.default.config();
-const s3 = new client_s3_1.S3Client({
-    region: "ap-south-1",
-    credentials: {
-        accessKeyId: process.env.ACCESS_KEY,
-        secretAccessKey: process.env.SECRET_ACCESS_KEY,
-    },
-});
+const s3 = new client_s3_1.S3Client({ region: "ap-south-1" });
 const BUCKET_NAME = process.env.BUCKET_NAME;
 app.get("/*", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const host = req.hostname;
